@@ -20,7 +20,7 @@ class ImageAdapter extends ArrayAdapter<String> {
     ImageAdapter(Context c, int layoutResourceId, ArrayList<String> adapter) {
         super(c, layoutResourceId , adapter);
         mContext = c;
-        this.adapter = new ArrayList<String>();
+        this.adapter = new ArrayList<>();
         this.adapter = adapter;
     }
 
@@ -46,7 +46,7 @@ class ImageAdapter extends ArrayAdapter<String> {
     @NonNull
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         ImageView imageView;
-        String base = "http://image.tmdb.org/t/p/w185/";
+        String base = "http://image.tmdb.org/t/p/w342/";
 
         if (convertView == null) {
             imageView = new ImageView(mContext);

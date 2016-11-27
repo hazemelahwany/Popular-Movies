@@ -1,6 +1,9 @@
 package com.example.android.popularmovies;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +49,13 @@ public class MoviesFragment extends Fragment {
 
     }
 
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -59,8 +69,12 @@ public class MoviesFragment extends Fragment {
         moviesList.setAdapter(imageAdapter);
 
 
-
-        new FetchMoviesData().execute();
+        if(isOnline()) {
+            new FetchMoviesData().execute();
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection",
+                    Toast.LENGTH_LONG).show();
+        }
 
 
         moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
