@@ -58,7 +58,7 @@ class ImageAdapter extends ArrayAdapter<String> {
 
         String s = getItem(position);
         assert s != null;
-        String[] sArray = s.split(" - ");
+        String[] sArray = s.split(" %% ");
         String url = sArray[0];
 
         Picasso.with(mContext).load(base + url).into(imageView);

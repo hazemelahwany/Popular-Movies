@@ -2,6 +2,7 @@ package com.example.android.popularmovies;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -134,8 +135,10 @@ public class MoviesFragment extends Fragment {
         moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(getActivity(), "" + position,
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "" + position,
+//                        Toast.LENGTH_SHORT).show();
+                String movie = imageAdapter.getItem(position);
+                startActivity(new Intent(getActivity(), DetailsActivity.class).putExtra(Intent.EXTRA_TEXT, movie));
             }
         });
 
@@ -250,7 +253,7 @@ public class MoviesFragment extends Fragment {
                 releaseDate = movie.getString(DATE);
                 rating = movie.getString(RATING);
 
-                results[i] = imagePath + " - " + title + " - " + overview + " - " + releaseDate + " - "
+                results[i] = imagePath + " %% " + title + " %% " + overview + " %% " + releaseDate + " %% "
                         + rating;
 
 
