@@ -2,14 +2,19 @@ package com.example.android.popularmovies;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,9 +38,53 @@ public class MoviesFragment extends Fragment {
 
     ImageAdapter imageAdapter;
     ArrayList<String> data;
+    SharedPreferences prefs;
+    String sort;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.movie_fragement, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id =item.getItemId();
+        if (id == R.id.popular) {
+            sort = "popular";
+            data.clear();
+            if(isOnline()) {
+
+                new FetchMoviesData().execute(sort);
+                Toast.makeText(getActivity(), "sorting by Most Popular",
+                        Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(getActivity(), "No Internet Connection",
+                        Toast.LENGTH_LONG).show();
+            }
+
+        }
+        else {
+            sort = "top_rated";
+            data.clear();
+            if(isOnline()) {
+
+                new FetchMoviesData().execute(sort);
+                Toast.makeText(getActivity(), "sorting by Top Rated",
+                        Toast.LENGTH_LONG).show();
+
+            } else {
+                Toast.makeText(getActivity(), "No Internet Connection",
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public MoviesFragment() {
@@ -46,6 +95,16 @@ public class MoviesFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        if(isOnline()) {
+            if (sort == null) {
+                sort = "popular";
+                new FetchMoviesData().execute(sort);
+            }
+
+        } else {
+            Toast.makeText(getActivity(), "No Internet Connection",
+                    Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -69,12 +128,7 @@ public class MoviesFragment extends Fragment {
         moviesList.setAdapter(imageAdapter);
 
 
-        if(isOnline()) {
-            new FetchMoviesData().execute();
-        } else {
-            Toast.makeText(getActivity(), "No Internet Connection",
-                    Toast.LENGTH_LONG).show();
-        }
+
 
 
         moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,17 +155,20 @@ public class MoviesFragment extends Fragment {
 
             String moviesJsonString = null;
 
+            String sort = params[0];
 
 
 
             try {
-                final String BASE_URL = "http://api.themoviedb.org/3/movie/popular?";
+                final String BASE_URL = "http://api.themoviedb.org/3/movie";
                 final String API_KEY_VALUE = "api_key";
 
                 Uri buildUri = Uri.parse(BASE_URL).buildUpon()
+                        .appendPath(sort)
                         .appendQueryParameter(API_KEY_VALUE, BuildConfig.MOVIES_API_KEY).build();
 
                 URL url = new URL(buildUri.toString());
+
 
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
