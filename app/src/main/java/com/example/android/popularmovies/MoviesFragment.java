@@ -3,13 +3,11 @@ package com.example.android.popularmovies;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,8 +37,8 @@ public class MoviesFragment extends Fragment {
 
     ImageAdapter imageAdapter;
     ArrayList<String> data;
-    SharedPreferences prefs;
     String sort;
+    FavouritesDB myDB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,10 +84,16 @@ public class MoviesFragment extends Fragment {
             }
         }
         else {
-
+            data = myDB.getAllMovies();
+            imageAdapter.setGridData(data);
+            if (data.size() == 0) {
+                Toast.makeText(getActivity(), "You Do Not Have Any Favourite Movie",
+                        Toast.LENGTH_LONG).show();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     public MoviesFragment() {
 
@@ -112,6 +116,7 @@ public class MoviesFragment extends Fragment {
 
     }
 
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -123,6 +128,7 @@ public class MoviesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
+        myDB = new FavouritesDB(getActivity());
         data = new ArrayList<>();
 
 

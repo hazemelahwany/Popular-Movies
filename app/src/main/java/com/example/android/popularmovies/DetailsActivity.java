@@ -104,6 +104,8 @@ public class DetailsActivity extends AppCompatActivity {
         private ArrayList<String> reviewsUrls;
         private ArrayAdapter<String> reviews;
         ToggleButton toggleButton;
+        private FavouritesDB myDB;
+        boolean isChecked;
 
 
         public DetailsFragment() {
@@ -118,7 +120,7 @@ public class DetailsActivity extends AppCompatActivity {
             Intent intent = getActivity().getIntent();
             if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
                 movie = intent.getStringExtra(Intent.EXTRA_TEXT);
-                String[] movieArray = movie.split(" %% ");
+                final String[] movieArray = movie.split(" %% ");
                 String base = "http://image.tmdb.org/t/p/w185/";
                 Picasso.with(getActivity()).load(base + movieArray[0]).into((ImageView) rootView.findViewById(R.id.movie_poster));
                 ((TextView) rootView.findViewById(R.id.movie_title)).setText(movieArray[1]);
@@ -126,6 +128,7 @@ public class DetailsActivity extends AppCompatActivity {
                 ((TextView) rootView.findViewById(R.id.movie_release_date)).setText(movieArray[3]);
                 ((TextView) rootView.findViewById(R.id.movie_user_rating)).setText(movieArray[4] + "/10");
 
+                myDB = new FavouritesDB(getActivity());
                 trailers = new ArrayList<>();
                 reviewsUrls = new ArrayList<>();
                 new FetchTrailers().execute(movieArray[5]);
@@ -153,17 +156,46 @@ public class DetailsActivity extends AppCompatActivity {
                     }
                 });
                 toggleButton = (ToggleButton) rootView.findViewById(R.id.favourite);
-                toggleButton.setChecked(false);
-                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favoritesoff));
-                toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                isChecked = false;
+                if (myDB.getData(Integer.parseInt(movieArray[5])).getCount() == 0 || !(myDB.getData(Integer.parseInt(movieArray[5])).moveToFirst())) {
+                    toggleButton.setChecked(isChecked);
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favoritesoff));
+                } else {
+                    isChecked = true;
+                    toggleButton.setChecked(isChecked);
+                    toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favorites));
+                }
+                toggleButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if (isChecked)
-                            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.favorites));
-                        else
+                    public void onClick(View view) {
+                        if(isChecked) {
+                            isChecked = false;
+                            myDB.deleteMovie(Integer.parseInt(movieArray[5]));
                             toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favoritesoff));
+                        }
+                        else {
+                            isChecked = true;
+                            myDB.insertMovie(movieArray[5], movie);
+                            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favorites));
+                        }
                     }
                 });
+//                boolean isChecked = false;
+//                toggleButton.setChecked(isChecked);
+//                toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favoritesoff));
+//                toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                        if (isChecked) {
+//                            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favorites));
+//                            myDB.insertMovie(movieArray[5], movie);
+//                        }
+//                        else {
+//                            toggleButton.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.favoritesoff));
+//                            myDB.deleteMovie(Integer.parseInt(movieArray[5]));
+//                        }
+//                    }
+//                });
 
             }
 

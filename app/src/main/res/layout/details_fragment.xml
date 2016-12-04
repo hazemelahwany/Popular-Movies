@@ -62,7 +62,7 @@
             android:layout_marginLeft="16dp"
             android:layout_toRightOf="@id/movie_poster"
             android:textOn=""
-            android:textOff=""/>
+            android:textOff="" />
 
         <TextView
             android:id="@+id/movie_description"
