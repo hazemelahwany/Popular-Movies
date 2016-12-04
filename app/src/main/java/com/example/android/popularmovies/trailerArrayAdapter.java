@@ -41,14 +41,9 @@ public class trailerArrayAdapter extends ArrayAdapter<String> {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(mContext.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.trailer_list_item, parent, false);
             ViewHolder holder = new ViewHolder();
-//            TextView textView = (TextView) row.findViewById(R.id.play_text);
-//            ImageView imageView = (ImageView) row.findViewById(R.id.play_logo);
             holder.text = (TextView) row.findViewById(R.id.play_text);
             holder.image = (ImageView) row.findViewById(R.id.play_logo);
             row.setTag(holder);
-
-//            imageView.setImageResource(R.drawable.play);
-//            textView.setText("Play Trailer " + String.valueOf(position + 1));
 
         }
         ViewHolder viewHolder = (ViewHolder) row.getTag();

@@ -54,7 +54,6 @@ public class DetailsFragment extends Fragment {
 
         Log.v("a7a", getArguments().getString(Intent.EXTRA_TEXT));
         movie = getArguments().getString(Intent.EXTRA_TEXT);
-//            movie = intent.getStringExtra(Intent.EXTRA_TEXT);
         final String[] movieArray = movie.split(" %% ");
         String base = "http://image.tmdb.org/t/p/w185/";
         Picasso.with(getActivity()).load(base + movieArray[0]).into((ImageView) rootView.findViewById(R.id.movie_poster));

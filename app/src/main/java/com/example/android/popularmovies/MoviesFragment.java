@@ -2,7 +2,6 @@ package com.example.android.popularmovies;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -135,27 +134,19 @@ public class MoviesFragment extends Fragment {
         myDB = new FavouritesDB(getActivity());
         data = new ArrayList<>();
 
-
-
-
         imageAdapter = new ImageAdapter(getActivity(), R.layout.grid_item_movie, data);
-
 
         GridView moviesList = (GridView) rootView.findViewById(R.id.movies_gridview);
         moviesList.setAdapter(imageAdapter);
 
         movieListener = (MainActivity) getActivity();
 
-
-
         moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
                 String movie = imageAdapter.getItem(position);
-
                 movieListener.chooseMovie(movie);
-//                startActivity(new Intent(getActivity(), DetailsActivity.class).putExtra(Intent.EXTRA_TEXT, movie));
             }
         });
 
@@ -163,10 +154,6 @@ public class MoviesFragment extends Fragment {
         return rootView;
 
     }
-
-//    public void setMovieListener(MovieListener movieListener) {
-//        this.movieListener = movieListener;
-//    }
 
     public class FetchMoviesData extends AsyncTask<String, Void, String[]> {
 
