@@ -39,6 +39,7 @@ public class MoviesFragment extends Fragment {
     ArrayList<String> data;
     String sort;
     FavouritesDB myDB;
+    MovieListener movieListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,6 +118,8 @@ public class MoviesFragment extends Fragment {
     }
 
 
+
+
     public boolean isOnline() {
         ConnectivityManager cm =
                 (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -127,35 +130,44 @@ public class MoviesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
         View rootView = inflater.inflate(R.layout.movies_fragment, container, false);
         myDB = new FavouritesDB(getActivity());
         data = new ArrayList<>();
 
 
+
+
         imageAdapter = new ImageAdapter(getActivity(), R.layout.grid_item_movie, data);
+
 
         GridView moviesList = (GridView) rootView.findViewById(R.id.movies_gridview);
         moviesList.setAdapter(imageAdapter);
 
-
+        movieListener = (MainActivity) getActivity();
 
 
 
         moviesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-//                Toast.makeText(getActivity(), "" + position,
-//                        Toast.LENGTH_SHORT).show();
+
                 String movie = imageAdapter.getItem(position);
-                startActivity(new Intent(getActivity(), DetailsActivity.class).putExtra(Intent.EXTRA_TEXT, movie));
+
+                movieListener.chooseMovie(movie);
+//                startActivity(new Intent(getActivity(), DetailsActivity.class).putExtra(Intent.EXTRA_TEXT, movie));
             }
         });
 
 
         return rootView;
 
-
     }
+
+//    public void setMovieListener(MovieListener movieListener) {
+//        this.movieListener = movieListener;
+//    }
+
     public class FetchMoviesData extends AsyncTask<String, Void, String[]> {
 
 
