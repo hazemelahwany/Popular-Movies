@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -12,7 +14,7 @@
         <TextView
             android:id="@+id/movie_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:background="@color/colorAccent"
             android:padding ="36dp"
@@ -21,12 +23,12 @@
 
         <ImageView
             android:id="@+id/movie_poster"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
             android:layout_below="@id/movie_title"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_width="140dp"
+            android:layout_height="180dp" />
 
         <TextView
             android:id="@+id/movie_release_date"
@@ -49,6 +51,19 @@
             android:textColor="#000000"
             android:textSize="16dp"/>
 
+        <ToggleButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/favourite"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_below="@id/movie_user_rating"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/movie_poster"
+            android:textOn=""
+            android:textOff=""/>
+
         <TextView
             android:id="@+id/movie_description"
             android:layout_width="wrap_content"
@@ -56,11 +71,73 @@
             android:layout_below="@id/movie_poster"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
             android:textSize="16dp"/>
+
+        <View
+            android:id="@+id/seperator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000"
+            android:layout_below="@id/movie_description"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/trailer_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Trailers:"
+            android:textSize="24dp"/>
+
+        <com.example.android.popularmovies.ExpandableHeightListView
+            android:id="@+id/trailers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/trailer_title"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"/>
+
+        <View
+            android:id="@+id/seperator2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#000000"
+            android:layout_below="@id/trailers"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/reviews_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/seperator2"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="Reviews:"
+            android:textSize="24dp"/>
+
+
+        <com.example.android.popularmovies.ExpandableHeightListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/reviews"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_below="@id/reviews_title"/>
+
+
+
+
 
 
 
     </RelativeLayout>
-
-
 </ScrollView>

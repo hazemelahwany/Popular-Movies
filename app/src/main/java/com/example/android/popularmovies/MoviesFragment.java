@@ -71,7 +71,7 @@ public class MoviesFragment extends Fragment {
             }
 
         }
-        else {
+        else if (id == R.id.topRated) {
             sort = "top_rated";
             data.clear();
             if(isOnline()) {
@@ -84,6 +84,9 @@ public class MoviesFragment extends Fragment {
                 Toast.makeText(getActivity(), "No Internet Connection",
                         Toast.LENGTH_LONG).show();
             }
+        }
+        else {
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -232,6 +235,7 @@ public class MoviesFragment extends Fragment {
             final String OVERVIEW = "overview";
             final String DATE = "release_date";
             final String RATING = "vote_average";
+            final String ID = "id";
 
             JSONObject reader = new JSONObject(moviesJsonString);
             JSONArray moviesArray = reader.getJSONArray(MOV_RESULTS);
@@ -244,6 +248,7 @@ public class MoviesFragment extends Fragment {
                 String overview;
                 String releaseDate;
                 String rating;
+                String id;
 
                 JSONObject movie = moviesArray.getJSONObject(i);
 
@@ -252,9 +257,11 @@ public class MoviesFragment extends Fragment {
                 overview = movie.getString(OVERVIEW);
                 releaseDate = movie.getString(DATE);
                 rating = movie.getString(RATING);
+                id = movie.getString(ID);
+
 
                 results[i] = imagePath + " %% " + title + " %% " + overview + " %% " + releaseDate + " %% "
-                        + rating;
+                        + rating + " %% " + id;
 
 
             }
